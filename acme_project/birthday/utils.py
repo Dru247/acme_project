@@ -4,7 +4,7 @@ from datetime import date
 def calculate_birthday_countdown(birthday):
     """
     Возвращает количество дней до следующего дня рождения.
-    
+
     Если день рождения сегодня, то возвращает 0.
     """
     # Сохраняем текущую дату в переменную today.
