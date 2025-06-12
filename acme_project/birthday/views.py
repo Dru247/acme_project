@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import BirthdayForm
 from .models import Birthday
@@ -11,8 +11,12 @@ def birthday_list(request):
     return render(request, 'birthday/birthday_list.html', context)
 
 
-def birthday(request):
-    form = BirthdayForm(request.POST or None)
+def birthday(request, pk=None):
+    if pk is not None:
+        instance = get_object_or_404(Birthday, pk=pk)
+    else:
+        instance = None
+    form = BirthdayForm(request.POST or None, instance=instance)
     context = {'form': form}
     if form.is_valid():
         form.save()
@@ -21,3 +25,14 @@ def birthday(request):
         )
         context.update({'birthday_countdown': birthday_countdown})
     return render(request, 'birthday/birthday.html', context=context)
+
+
+def delete_birthday(request, pk):
+    instance = get_object_or_404(Birthday, pk=pk)
+    form = BirthdayForm(instance=instance)
+    context = {'form': form}
+    if request.method == 'POST':
+        instance.delete()
+        return redirect('birthday:list')
+
+    return render(request, 'birthday/birthday.html', context)
