@@ -1,12 +1,14 @@
 from django.urls import path
 
-from .views import delete_birthday, birthday, birthday_list
+from .views import (BirthdayCreateView, BirthdayDeleteView, BirthdayDetailView,
+                    BirthdayListView, BirthdayUpdateView)
 
 app_name = 'birthday'
 
 urlpatterns = [
-    path('', birthday, name='create'),
-    path('list/', birthday_list, name='list'),
-    path('<int:pk>/edit/', birthday, name='edit'),
-    path('<int:pk>/delete/', delete_birthday, name='delete')
+    path('', BirthdayCreateView.as_view(), name='create'),
+    path('list/', BirthdayListView.as_view(), name='list'),
+    path('<int:pk>/', BirthdayDetailView.as_view(), name='detail'),
+    path('<int:pk>/edit/', BirthdayUpdateView.as_view(), name='edit'),
+    path('<int:pk>/delete/', BirthdayDeleteView.as_view(), name='delete')
 ]
